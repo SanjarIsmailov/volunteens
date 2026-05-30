@@ -1,84 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in — Volunteens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    body{
-      margin:0;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:linear-gradient(135deg,#04044d,#0f4c81);
-      font-family:Poppins,sans-serif;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #0f0e0b;
+      --paper:  #f5f0e8;
+      --cream:  #ede6d6;
+      --gold:   #c8933a;
+      --dark:   #1a1610;
+      --muted:  #7a6f60;
+      --error:  #c0392b;
     }
 
-    .card{
-      width:400px;
-      background:white;
-      padding:40px;
-      border-radius:20px;
-      box-shadow:0 10px 40px rgba(0,0,0,.3);
+    body {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
     }
 
-    h2{
-      text-align:center;
+    /* ── left decorative panel ── */
+    .panel {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 60px;
+      position: relative;
+      overflow: hidden;
     }
 
-    input{
-      width:100%;
-      padding:12px;
-      margin-top:10px;
-      margin-bottom:20px;
-      border:1px solid #ddd;
-      border-radius:10px;
+    .panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+              transparent, transparent 39px, rgba(200,147,58,.08) 40px
+      );
     }
 
-    button{
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:#0f4c81;
-      color:white;
-      cursor:pointer;
+    .panel-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f5f0e8;
+      text-decoration: none;
+      position: relative; z-index: 1;
+    }
+    .panel-logo span { color: var(--gold); }
+
+    .panel-quote {
+      position: relative; z-index: 1;
     }
 
-    a{
-      text-decoration:none;
+    blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-style: italic;
+      line-height: 1.25;
+      color: #f5f0e8;
+      margin-bottom: 24px;
+    }
+
+    .quote-author {
+      font-size: .85rem;
+      color: var(--gold);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .panel-dots {
+      display: flex; gap: 6px;
+      position: relative; z-index: 1;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.2);
+    }
+    .dot.active { background: var(--gold); }
+
+    /* ── right form panel ── */
+    .form-side {
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+
+    .form-box {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .form-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .form-box .subtitle {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      color: var(--dark);
+      background: #fff;
+      border: 1.5px solid rgba(0,0,0,.12);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      margin-bottom: 24px;
+    }
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200,147,58,.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      margin-top: 4px;
+    }
+    .btn-submit:hover {
+      background: #b07e2c;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200,147,58,.3);
+    }
+    .btn-submit:active { transform: translateY(0); }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .form-footer a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .form-footer a:hover { text-decoration: underline; }
+
+    /* error message from Spring Security */
+    .alert-error {
+      background: #fdf0ef;
+      border: 1.5px solid #f5c6c2;
+      color: var(--error);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: .88rem;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 700px) {
+      body { grid-template-columns: 1fr; }
+      .panel { display: none; }
     }
   </style>
 </head>
 <body>
 
-<div class="card">
+<div class="panel">
+  <a th:href="@{/}" class="panel-logo">Vol<span>unt</span>eens</a>
 
-  <h2>Login</h2>
+  <div class="panel-quote">
+    <blockquote>&ldquo;The act of putting pen&nbsp;to paper encourages pause for thought.&rdquo;</blockquote>
+    <p class="quote-author">— Norman Mailer</p>
+  </div>
 
-  <form method="post" action="/login">
+  <div class="panel-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
 
-    <input type="email"
-           name="username"
-           placeholder="Email">
+<div class="form-side">
+  <div class="form-box">
+    <h2>Welcome back</h2>
+    <p class="subtitle">Sign in to continue writing.</p>
 
-    <input type="password"
-           name="password"
-           placeholder="Password">
+    <!-- BUG FIX: added th:if for error message from Spring Security -->
+    <div class="alert-error" th:if="${param.error}">
+      Incorrect email or password. Please try again.
+    </div>
 
-    <button type="submit">
-      Login
-    </button>
+    <!-- BUG FIX: added xmlns:th namespace reference (already via html tag) -->
+    <form method="post" th:action="@{/login}">
 
-  </form>
+      <label for="username">Email</label>
+      <input id="username"
+             type="email"
+             name="username"
+             placeholder="you@example.com"
+             autocomplete="email"
+             required>
 
-  <br>
+      <label for="password">Password</label>
+      <input id="password"
+             type="password"
+             name="password"
+             placeholder="••••••••"
+             autocomplete="current-password"
+             required>
 
-  <a href="/register">
-    Register
-  </a>
+      <button class="btn-submit" type="submit">Sign in</button>
 
+    </form>
+
+    <p class="form-footer">
+      Don't have an account? <a th:href="@{/register}">Register here</a>
+    </p>
+  </div>
 </div>
 
 </body>

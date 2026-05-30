@@ -1,19 +1,553 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="uz"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <title>Volunteens</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteens — Volontyorlik imkoniyatlari</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #030418;
+            --surface: #080b2e;
+            --cyan: #00e5ff;
+            --violet: #7c5cfc;
+            --white: #f0f4ff;
+            --muted: rgba(200,210,255,.6);
+            --card-bg: rgba(255,255,255,.04);
+            --border: rgba(255,255,255,.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+
+            padding: 20px 7%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(3,4,24,.85);
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 12px;
+
+            background: linear-gradient(135deg, var(--cyan), var(--violet));
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+
+            color: white;
+        }
+
+        .logo-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--muted);
+
+            padding: 10px 18px;
+
+            border-radius: 50px;
+
+            transition: .3s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: white !important;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,.06);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--cyan), var(--violet));
+
+            color: white !important;
+
+            border: none;
+
+            padding: 10px 24px;
+
+            border-radius: 50px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            transition: .3s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,229,255,.3);
+        }
+
+        .logout-btn {
+            border: none;
+            font-family: inherit;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 140px 8% 80px;
+
+            background:
+                    radial-gradient(circle at top left, rgba(0,229,255,.15), transparent 30%),
+                    radial-gradient(circle at bottom right, rgba(124,92,252,.15), transparent 30%);
+        }
+
+        .hero-inner {
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+
+            padding: 8px 20px;
+
+            border-radius: 50px;
+
+            border: 1px solid rgba(0,229,255,.3);
+
+            color: var(--cyan);
+
+            margin-bottom: 36px;
+
+            font-size: .9rem;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.05;
+            margin-bottom: 30px;
+        }
+
+        .accent {
+            background: linear-gradient(90deg, var(--cyan), var(--violet));
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            max-width: 700px;
+
+            margin: auto auto 45px;
+
+            color: var(--muted);
+
+            line-height: 1.9;
+
+            font-size: 1.1rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--cyan), var(--violet));
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 16px 34px;
+
+            border-radius: 50px;
+
+            font-weight: 600;
+
+            transition: .3s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0,229,255,.3);
+        }
+
+        /* FEATURES */
+
+        section {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+
+            font-family: 'Syne', sans-serif;
+
+            font-size: 2.7rem;
+
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+
+            gap: 24px;
+        }
+
+        .feat-card {
+            background: var(--card-bg);
+
+            border: 1px solid var(--border);
+
+            border-radius: 24px;
+
+            padding: 40px;
+
+            transition: .3s;
+        }
+
+        .feat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0,229,255,.25);
+        }
+
+        .feat-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .feat-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .feat-desc {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--border);
+
+            padding: 40px 8%;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 768px) {
+
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 3.2rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-<h1>Volunteens</h1>
+<header>
 
-<a href="/login">
-    <button>Login</button>
-</a>
+    <a href="/" class="logo-wrap">
 
-<a href="/register">
-    <button>Register</button>
-</a>
+        <div class="logo-mark">V</div>
+
+        <span class="logo-name">VOLUNTEENS</span>
+
+    </a>
+
+    <nav>
+
+        <a href="#about">Biz haqimizda</a>
+
+        <a href="#features">Imkoniyatlar</a>
+
+        <a href="#contact">Aloqa</a>
+
+        <!-- GUEST USERS -->
+
+        <div sec:authorize="isAnonymous()"
+             style="display:flex; gap:10px; align-items:center;">
+
+            <a th:href="@{/login}" class="btn-outline">
+                Login
+            </a>
+
+            <a th:href="@{/register}" class="nav-cta">
+                Register
+            </a>
+
+        </div>
+
+        <!-- AUTHENTICATED USERS -->
+
+        <div sec:authorize="isAuthenticated()"
+             style="display:flex; gap:10px; align-items:center;">
+
+            <a th:href="@{/profile}" class="btn-outline">
+                Profile
+            </a>
+
+            <form th:action="@{/logout}"
+                  method="post"
+                  style="margin:0;">
+
+                <button type="submit"
+                        class="nav-cta logout-btn">
+
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </nav>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero" id="about">
+
+    <div class="hero-inner">
+
+        <div class="hero-badge">
+            Yoshlar uchun platforma
+        </div>
+
+        <h1>
+            Start Your <br>
+            <span class="accent">Global Path</span> <br>
+            With Us
+        </h1>
+
+        <p class="hero-desc">
+
+            Volunteens — yoshlar uchun xalqaro va mahalliy
+            volontyorlik dasturlarini topishga yordam beruvchi
+            platforma. Tajriba orttiring, dunyoni kashf qiling
+            va yangi imkoniyatlarni qo'lga kiriting.
+
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="https://t.me/Volunteensuz"
+               target="_blank"
+               class="btn-main">
+
+                Telegram kanalga qo'shilish
+
+            </a>
+
+            <a href="#features"
+               class="btn-outline">
+
+                Ko'proq bilish
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section id="features">
+
+    <h2 class="section-title">
+        Volunteens imkoniyatlari
+    </h2>
+
+    <div class="features-grid">
+
+        <div class="feat-card">
+
+            <div class="feat-icon">🌍</div>
+
+            <div class="feat-title">
+                Xalqaro imkoniyatlar
+            </div>
+
+            <div class="feat-desc">
+
+                Turli davlatlardagi volontyorlik
+                dasturlarini toping va tajriba orttiring.
+
+            </div>
+
+        </div>
+
+        <div class="feat-card">
+
+            <div class="feat-icon">🎓</div>
+
+            <div class="feat-title">
+                Tajriba va rivojlanish
+            </div>
+
+            <div class="feat-desc">
+
+                Leadership, networking va professional
+                ko'nikmalaringizni rivojlantiring.
+
+            </div>
+
+        </div>
+
+        <div class="feat-card">
+
+            <div class="feat-icon">🤝</div>
+
+            <div class="feat-title">
+                Faol hamjamiyat
+            </div>
+
+            <div class="feat-desc">
+
+                Faol yoshlar bilan tanishing,
+                networking qiling va o'sing.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+    <h2 class="section-title">
+        Biz bilan bog'laning
+    </h2>
+
+    <div style="text-align:center;">
+
+        <a href="https://t.me/Volunteensuz"
+           target="_blank"
+           class="btn-main">
+
+            Telegram orqali bog'lanish
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    © 2025 Volunteens.
+    Barcha huquqlar himoyalangan.
+
+</footer>
 
 </body>
 </html>

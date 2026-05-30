@@ -1,44 +1,257 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Volunteens</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:   #0f0e0b;
+      --paper: #f5f0e8;
+      --cream: #ede6d6;
+      --gold:  #c8933a;
+      --dark:  #1a1610;
+      --muted: #7a6f60;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--paper);
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: repeating-linear-gradient(
+              transparent, transparent 39px, rgba(200,147,58,.1) 40px
+      );
+      pointer-events: none;
+    }
+
+    /* decorative circle */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,147,58,.07) 0%, transparent 70%);
+      top: -200px; right: -200px;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative; z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 52px 48px;
+      box-shadow: 0 4px 6px rgba(0,0,0,.04), 0 20px 60px rgba(0,0,0,.1);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold); }
+
+    .step-indicator {
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    /* two-column row */
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px 15px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      color: var(--dark);
+      background: var(--paper);
+      border: 1.5px solid rgba(0,0,0,.1);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    input:focus {
+      background: #fff;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200,147,58,.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      margin-top: 8px;
+      background: var(--gold);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-submit:hover {
+      background: #b07e2c;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200,147,58,.3);
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(0,0,0,.08);
+      margin: 28px 0;
+    }
+
+    .form-footer {
+      text-align: center;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .form-footer a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .form-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .card { padding: 36px 24px; }
+      .row-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
 </head>
 <body>
 
-<h2>Register</h2>
+<div class="card">
+  <div class="card-header">
+    <a th:href="@{/}" class="logo">Vol<span>unt</span>eens</a>
+    <span class="step-indicator">Step 1 of 1</span>
+  </div>
 
-<form>
+  <h2>Create account</h2>
+  <p class="subtitle">Join the community of young writers.</p>
 
-  <input type="text"
-         placeholder="Name">
+  <!-- BUG FIX: added method="post", th:action, and name attributes on every input -->
+  <form method="post" th:action="@{/register}">
 
-  <br><br>
+    <div class="row-2">
+      <div class="field">
+        <label for="name">First name</label>
+        <input id="name"
+               type="text"
+               name="name"
+               placeholder="Sanjar"
+               autocomplete="given-name"
+               required>
+      </div>
+      <div class="field">
+        <label for="surname">Last name</label>
+        <input id="surname"
+               type="text"
+               name="surname"
+               placeholder="Ismailov"
+               autocomplete="family-name"
+               required>
+      </div>
+    </div>
 
-  <input type="text"
-         placeholder="Surname">
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email"
+             type="email"
+             name="email"
+             placeholder="you@example.com"
+             autocomplete="email"
+             required>
+    </div>
 
-  <br><br>
+    <div class="field">
+      <label for="phoneNumber">Phone number</label>
+      <input id="phoneNumber"
+             type="text"
+             name="phoneNumber"
+             placeholder="+998 90 123 45 67"
+             autocomplete="tel">
+    </div>
 
-  <input type="email"
-         placeholder="Email">
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password"
+             type="password"
+             name="password"
+             placeholder="At least 8 characters"
+             autocomplete="new-password"
+             required>
+    </div>
 
-  <br><br>
+    <button class="btn-submit" type="submit">Create my account</button>
 
-  <input type="text"
-         placeholder="Phone Number">
+  </form>
 
-  <br><br>
+  <div class="divider"></div>
 
-  <input type="password"
-         placeholder="Password">
-
-  <br><br>
-
-  <button type="submit">
-    Register
-  </button>
-
-</form>
+  <p class="form-footer">
+    Already have an account? <a th:href="@{/login}">Sign in</a>
+  </p>
+</div>
 
 </body>
 </html>
