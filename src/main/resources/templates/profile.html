@@ -4,17 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Profile — Volunteens</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --ink:    #0f0e0b;
-      --paper:  #f5f0e8;
-      --cream:  #ede6d6;
-      --gold:   #c8933a;
-      --dark:   #1a1610;
-      --muted:  #7a6f60;
+      --ink:#0f0e0b;
+      --paper:#f5f0e8;
+      --cream:#ede6d6;
+      --gold:#c8933a;
+      --dark:#1a1610;
+      --muted:#7a6f60;
     }
 
     body {
@@ -26,17 +32,23 @@
 
     body::before {
       content: '';
-      position: fixed; inset: 0; z-index: 0;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
       background-image: repeating-linear-gradient(
-              transparent, transparent 39px, rgba(200,147,58,.08) 40px
+              transparent,
+              transparent 39px,
+              rgba(200,147,58,.08) 40px
       );
       pointer-events: none;
     }
 
-    /* ── nav ── */
     nav {
-      position: relative; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 24px 60px;
       border-bottom: 1px solid rgba(0,0,0,.07);
       background: rgba(245,240,232,.9);
@@ -50,14 +62,21 @@
       color: var(--dark);
       text-decoration: none;
     }
-    .logo span { color: var(--gold); }
 
-    .nav-right { display: flex; gap: 12px; align-items: center; }
+    .logo span {
+      color: var(--gold);
+    }
 
-    /* BUG FIX: replaced <a><button> with proper <a> styled as button, and form logout button */
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       font-family: 'DM Sans', sans-serif;
       font-size: .9rem;
@@ -67,17 +86,16 @@
       text-decoration: none;
       cursor: pointer;
       border: none;
-      transition: all .22s ease;
+      transition: .22s ease;
     }
 
     .btn-primary {
       background: var(--gold);
       color: #fff;
     }
+
     .btn-primary:hover {
       background: #b07e2c;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(200,147,58,.3);
     }
 
     .btn-ghost {
@@ -85,94 +103,62 @@
       color: var(--muted);
       border: 1.5px solid rgba(0,0,0,.12);
     }
+
     .btn-ghost:hover {
       background: var(--dark);
       color: var(--paper);
-      border-color: var(--dark);
     }
 
-    /* ── main content ── */
     main {
-      position: relative; z-index: 5;
-      max-width: 880px;
+      position: relative;
+      z-index: 5;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 64px 40px;
+      padding: 60px 40px;
     }
 
     .profile-header {
       display: flex;
-      align-items: center;
       gap: 28px;
-      margin-bottom: 56px;
+      align-items: center;
+      margin-bottom: 50px;
     }
 
     .avatar {
-      width: 80px; height: 80px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       background: var(--dark);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-style: italic;
       color: var(--gold);
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-family: 'Playfair Display', serif;
     }
 
     .profile-info h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
-      color: var(--dark);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .profile-info p {
-      font-size: .9rem;
       color: var(--muted);
     }
 
-    /* ── essays area ── */
     .section-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
+      align-items: center;
+      margin-bottom: 24px;
     }
 
     .section-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
-      color: var(--dark);
     }
 
-    /* empty state */
-    .empty-state {
-      background: #fff;
-      border: 1.5px dashed rgba(200,147,58,.35);
-      border-radius: 16px;
-      padding: 64px 40px;
-      text-align: center;
-    }
-
-    .empty-icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-      opacity: .4;
-    }
-
-    .empty-state h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--dark);
-      margin-bottom: 8px;
-    }
-
-    .empty-state p {
-      color: var(--muted);
-      font-size: .9rem;
-      margin-bottom: 28px;
-    }
-
-    /* ── essay card (for when essays exist) ── */
     .essay-grid {
       display: grid;
       gap: 20px;
@@ -181,37 +167,43 @@
     .essay-card {
       background: #fff;
       border-radius: 14px;
-      padding: 28px 32px;
-      border: 1.5px solid rgba(0,0,0,.07);
-      transition: box-shadow .2s, transform .2s;
-      cursor: pointer;
-    }
-    .essay-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,.08);
-      transform: translateY(-2px);
+      padding: 28px;
+      border: 1px solid rgba(0,0,0,.08);
     }
 
     .essay-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      color: var(--dark);
-      margin-bottom: 8px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
     }
 
     .essay-excerpt {
-      font-size: .88rem;
       color: var(--muted);
-      line-height: 1.6;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      line-height: 1.7;
     }
 
-    @media (max-width: 600px) {
-      nav { padding: 20px 24px; }
-      main { padding: 40px 24px; }
-      .profile-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .essay-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .empty-state {
+      background: #fff;
+      border: 2px dashed rgba(200,147,58,.35);
+      border-radius: 16px;
+      padding: 60px;
+      text-align: center;
+    }
+
+    .empty-state h3 {
+      margin: 10px 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .empty-state p {
+      color: var(--muted);
+      margin-bottom: 25px;
     }
   </style>
 </head>
@@ -219,21 +211,25 @@
 
 <nav>
   <a th:href="@{/}" class="logo">Vol<span>unt</span>eens</a>
+
   <div class="nav-right">
-    <!-- BUG FIX: use <a> styled as button instead of invalid <a><button> -->
     <a th:href="@{/essay/new}" class="btn btn-primary">
-      ✦ New essay
+      ✦ New Essay
     </a>
-    <!-- BUG FIX: logout button stays as a form/button — correct -->
-    <form th:action="@{/logout}" method="post" style="display:inline">
-      <button type="submit" class="btn btn-ghost">Sign out</button>
+
+    <form th:action="@{/logout}" method="post">
+      <button class="btn btn-ghost" type="submit">
+        Sign Out
+      </button>
     </form>
   </div>
 </nav>
 
 <main>
+
   <div class="profile-header">
     <div class="avatar">V</div>
+
     <div class="profile-info">
       <h1>My Profile</h1>
       <p>Welcome back — what will you write today?</p>
@@ -241,24 +237,61 @@
   </div>
 
   <div class="section-header">
-    <h2 class="section-title">My essays</h2>
+    <h2 class="section-title">My Essays</h2>
   </div>
 
-  <!-- Show essays if they exist (th:if / th:each to be wired by controller) -->
-  <div class="essay-grid" th:if="${essays != null and not #lists.isEmpty(essays)}">
-    <div class="essay-card" th:each="essay : ${essays}">
-      <p class="essay-title" th:text="${essay.title}">Essay Title</p>
-      <p class="essay-excerpt" th:text="${essay.content}">Essay content preview...</p>
+  <div class="essay-grid"
+       th:if="${essays != null and not #lists.isEmpty(essays)}">
+
+    <div class="essay-card"
+         th:each="essay : ${essays}">
+
+      <p class="essay-title"
+         th:text="${essay.title}">
+      </p>
+
+      <p class="essay-excerpt"
+         th:text="${essay.content}">
+      </p>
+
+      <div class="essay-actions">
+
+        <a th:href="@{/essay/edit/{id}(id=${essay.id})}"
+           class="btn btn-primary">
+          Edit
+        </a>
+
+        <form th:action="@{/essay/delete/{id}(id=${essay.id})}"
+              method="post">
+
+          <button type="submit"
+                  class="btn btn-ghost"
+                  onclick="return confirm('Delete this essay?')">
+            Delete
+          </button>
+
+        </form>
+
+      </div>
+
     </div>
+
   </div>
 
-  <!-- Empty state -->
-  <div class="empty-state" th:if="${essays == null or #lists.isEmpty(essays)}">
-    <div class="empty-icon">✍️</div>
+  <div class="empty-state"
+       th:if="${essays == null or #lists.isEmpty(essays)}">
+
     <h3>No essays yet</h3>
-    <p>Your published essays will appear here. Ready to write your first one?</p>
-    <a th:href="@{/essay/new}" class="btn btn-primary">Write my first essay</a>
+
+    <p>Your published essays will appear here.</p>
+
+    <a th:href="@{/essay/new}"
+       class="btn btn-primary">
+      Write My First Essay
+    </a>
+
   </div>
+
 </main>
 
 </body>
