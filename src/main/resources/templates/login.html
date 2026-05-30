@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#04044d,#0f4c81);
+      font-family:Poppins,sans-serif;
+    }
+
+    .card{
+      width:400px;
+      background:white;
+      padding:40px;
+      border-radius:20px;
+      box-shadow:0 10px 40px rgba(0,0,0,.3);
+    }
+
+    h2{
+      text-align:center;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      margin-top:10px;
+      margin-bottom:20px;
+      border:1px solid #ddd;
+      border-radius:10px;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:#0f4c81;
+      color:white;
+      cursor:pointer;
+    }
+
+    a{
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <h2>Login</h2>
+
+  <form method="post" action="/login">
+
+    <input type="email"
+           name="username"
+           placeholder="Email">
+
+    <input type="password"
+           name="password"
+           placeholder="Password">
+
+    <button type="submit">
+      Login
+    </button>
+
+  </form>
+
+  <br>
+
+  <a href="/register">
+    Register
+  </a>
+
+</div>
+
+</body>
+</html>

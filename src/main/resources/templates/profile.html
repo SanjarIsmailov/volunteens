@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Profile</title>
+</head>
+<body>
+
+<h1>My Profile</h1>
+
+<a href="/essay/new">
+  <button>Create Essay</button>
+</a>
+
+<form th:action="@{/logout}" method="post">
+
+  <button type="submit">
+    Logout
+  </button>
+
+</form>
+
+</body>
+</html>
