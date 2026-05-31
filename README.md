@@ -2,7 +2,7 @@
 
 🌍 Helping students discover life-changing opportunities worldwide.
 
-Volunteens is a platform that curates fully-funded scholarships, summer programs, competitions, research opportunities, internships, and exchange programs for ambitious students, especially those from Central Asia. :contentReference[oaicite:0]{index=0}
+Volunteens is a platform that curates fully-funded scholarships, summer programs, competitions, research opportunities, internships, and exchange programs for ambitious students, especially those from Central Asia.
 
 ## Mission
 
