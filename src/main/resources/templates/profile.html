@@ -208,6 +208,7 @@
     <div class="nav-right">
       <button class="icon-btn" onclick="toggleTheme()" aria-label="Theme" data-theme-icon></button>
       <span class="text-soft desktop-only" style="font-size:14px;" th:text="${user != null} ? ${user.name} : ''"></span>
+      <a class="btn btn-primary btn-sm" th:if="${user != null and user.admin}" th:href="@{/admin}">Admin panel</a>
       <form th:action="@{/logout}" method="post" style="display:inline;">
         <button class="btn btn-ghost btn-sm" type="submit">Log out</button>
       </form>

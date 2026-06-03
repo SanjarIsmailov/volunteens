@@ -10,12 +10,12 @@ import sanjar.volunteens.repo.UserRepository;
 @Controller
 public class AuthController {
 
-    private final UserRepository  userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public AuthController(UserRepository userRepository,
                           PasswordEncoder passwordEncoder) {
-        this.userRepository  = userRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -48,6 +48,7 @@ public class AuthController {
         user.setSurname(surname);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
+        user.setAdmin(false);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
 
